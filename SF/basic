@@ -101,6 +101,35 @@ Proof. simpl. reflexivity. Qed.
 
 
 
+Module Playground1.
+
+Inductive nat : Type :=
+  | O : nat
+  | S : nat -> nat.
+
+Definition pred (n : nat) : nat :=
+  match n with
+  | O => O
+  | S n' => n'
+  end.
+
+End Playground1.
+
+Definition minustwo (n : nat) : nat :=
+  match n with
+  | 0 => 0
+  | S 0 => 0
+  | S (S n') => n'
+  end.
+
+Check S (S (S (S 0))).
+
+Eval compute in (minustwo 4).
+
+Check S.
+
+Check Playground1.nat.
+
 
 
 
