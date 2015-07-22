@@ -127,12 +127,49 @@ Check S (S (S (S 0))).
 Eval compute in (minustwo 4).
 
 Check S.
-
 Check Playground1.nat.
+Check minustwo.
+
+Fixpoint evenb ( n : nat) : bool :=
+  match n with
+  | 0 => true
+  | S 0 => false
+  | S (S n') =>  evenb (n')
+  end.
+
+Eval compute in evenb (14).
+
+Definition oddb (n : nat) : bool :=
+  negb (evenb n).
+Eval compute in oddb (13).
+
+
+Example test_oddb1: (oddb (S O)) = true.
+Proof. reflexivity. Qed.
+Example test_oddb2: (oddb (S (S (S (S O))))) = false.
+Proof. reflexivity. Qed.
+
+(* excer *)
 
 
 
+Module Playground2.
 
+Fixpoint plus (n : nat) (m : nat) : nat :=
+  match n with
+    | O => m
+    | S n' => S (plus n' m)
+  end.
+
+Eval compute in (plus (S (S (S O))) (S (S O))).
+
+End Playground2.
+
+
+
+Fixpoint mult (n m : nat) : nat :=
+  match n with
+  | 0 => 0
 
 
 `
