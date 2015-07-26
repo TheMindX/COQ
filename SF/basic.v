@@ -236,18 +236,30 @@ Fixpoint beq_nat (n m : nat) : bool :=
             end
   end.
 
-
-
-
-Fixpoint beq_nat1 (n m : nat) : bool :=
+Fixpoint ble_nat1 (n m : nat) : bool :=
   match n, m with
   | 0, 0 => true
   | S n', 0 => false
   | 0, S m' => true
-  | S n', S m' => (beq_nat1 n' m')
+  | S n', S m' => (ble_nat1 n' m')
   end.
 
-Eval compute in (beq_nat1 3 4).
+Eval compute in (ble_nat1 3 4).
+
+Fixpoint blt_nat1 (n m : nat) : bool :=
+  match n, m with
+  | 0, 0 => false
+  | S n', 0 => false
+  | 0, S m' => true
+  | S n', S m' => (blt_nat1 n' m')
+  end.
+
+Example tblt_nat1: (blt_nat1 2 2) = false.
+Proof. reflexivity. Qed.
+Example tblt_nat2: (blt_nat1 2 4) = true.
+Proof. reflexivity. Qed.
+Example tblt_nat3: (blt_nat1 4 2) = false.
+Proof. reflexivity. Qed.
 
 
 
@@ -255,5 +267,3 @@ Eval compute in (beq_nat1 3 4).
 
 
 
-
-`
