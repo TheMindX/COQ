@@ -170,6 +170,90 @@ End Playground2.
 Fixpoint mult (n m : nat) : nat :=
   match n with
   | 0 => 0
+  | S n' => plus m (mult n' m)
+  end.
+
+
+Eval compute in (mult 3 4).
+
+Example testMult1 : (mult 5 6) = 30.
+Proof. reflexivity. Qed.
+
+
+
+
+Fixpoint minus (n m : nat) : nat :=
+  match n, m with
+  | 0, _ => 0
+  | S _, 0 => n
+  | S n', S m' => minus n' m'
+  end.
+
+Eval compute in (minus 3 2).
+
+
+
+Fixpoint exp (n m : nat) : nat :=
+  match n, m with
+  | _, 0 => 1
+  | 0, _ => 0
+  | (S n'), (S m') => (mult n (exp n m'))
+  end.
+
+
+Eval compute in (exp 3 4).
+
+Fixpoint fac (n:nat) : nat :=
+  match n with
+  | 0 => 0
+  | S 0 => 1
+  | S n' => (mult n (fac n'))
+  end.
+
+Example testfac : (fac 3) = 6.
+Proof. reflexivity. Qed.
+
+Example testfac2 : (fac 4) = (mult 12 2).
+Proof. reflexivity. Qed.
+
+
+Notation "x +* y" := (exp x y)
+(at level 50, left associativity) : nat_scope.
+
+Check ((0+1) + 1).
+
+Eval compute in ((2+*2) +* 2).
+
+Fixpoint beq_nat (n m : nat) : bool :=
+  match n with
+  | O => match m with
+         | O => true
+         | S m' => false
+         end
+  | S n' => match m with
+            | O => false
+            | S m' => beq_nat n' m'
+            end
+  end.
+
+
+
+
+Fixpoint beq_nat1 (n m : nat) : bool :=
+  match n, m with
+  | 0, 0 => true
+  | S n', 0 => false
+  | 0, S m' => true
+  | S n', S m' => (beq_nat1 n' m')
+  end.
+
+Eval compute in (beq_nat1 3 4).
+
+
+
+
+
+
 
 
 `
