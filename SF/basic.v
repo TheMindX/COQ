@@ -263,7 +263,66 @@ Proof. reflexivity. Qed.
 
 
 
+Theorem plus_id_1 : forall n m : nat,
+  n = m ->
+  n + m = m + n.
 
+Proof.
+  intros n m.
+  intros H.
+  rewrite -> H.
+  reflexivity.
+Qed.
+
+
+Theorem plus_id_exercise : forall n m o : nat,
+  n = m -> m = o -> n + m = m + o.
+
+Proof.
+  intros n m o.
+  intros H.
+  intros H1.
+  rewrite <- H.
+  rewrite <- H1.
+  rewrite <- H.
+  reflexivity.
+Qed.
+
+
+
+Theorem plus_0_n : forall n:nat,
+  0 + n = n.
+
+Proof.
+  intros n.
+  simpl.
+  reflexivity.
+Qed.
+
+
+
+Theorem mult_0_plus : forall n m : nat,
+  (0 + n) * m = n * m.
+
+Proof.
+  intros n m.
+  rewrite -> plus_0_n.
+  reflexivity.
+Qed.
+
+
+
+
+Theorem mult_S_1 : forall n m : nat,
+  m = S n -> 
+  m * (1 + n) = m * m.
+Proof.
+  intros n m.
+  simpl.
+  intros H.
+  rewrite <- H.
+  reflexivity.
+Qed.
 
 
 
