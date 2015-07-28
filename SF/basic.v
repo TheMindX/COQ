@@ -1,3 +1,5 @@
+(* software foundation *)
+
 Inductive day : Type :=
   | monday : day
   | tuesday : day
@@ -25,7 +27,10 @@ Eval compute in (next_weekday (next_weekday saturday)).
 Example test_next_weekday:
   (next_weekday (next_weekday saturday)) = tuesday.
 
-Proof. simpl. reflexivity. Qed.
+Proof. 
+simpl. 
+reflexivity. 
+Qed.
 
 Inductive bool : Type :=
   |true : bool
@@ -153,7 +158,7 @@ Proof. reflexivity. Qed.
 
 
 
-Module Playground2.
+(* Module Playground2.*)
 
 Fixpoint plus (n : nat) (m : nat) : nat :=
   match n with
@@ -163,7 +168,7 @@ Fixpoint plus (n : nat) (m : nat) : nat :=
 
 Eval compute in (plus (S (S (S O))) (S (S O))).
 
-End Playground2.
+(* End Playground2. *)
 
 
 
@@ -312,7 +317,7 @@ Qed.
 
 
 
-
+(* comment start 2 *)
 Theorem mult_S_1 : forall n m : nat,
   m = S n -> 
   m * (1 + n) = m * m.
@@ -325,4 +330,62 @@ Proof.
 Qed.
 
 
+Fixpoint beq_nat1 (n m :nat) : bool :=
+  match n, m with
+  | 0, 0 => true
+  | S n', 0 => false
+  | 0, S m' => false
+  | S n', S m' => (beq_nat1 n' m')
+  end.
+
+Eval compute in (beq_nat1 2 1).
+
+
+Notation "x + y" := (plus x y)
+(at level 50, left associativity) : nat_scope.
+
+
+
+
+
+
+Theorem plus_1_neq_0_firsttry : forall n : nat,
+  beq_nat1 (n + 1) 0 = false.
+Proof.
+  intros n.
+  destruct n as [| n']. (* vars sep by | *)
+  reflexivity.
+  reflexivity.
+Qed.
+
+
+Theorem negb_involutive : forall b : bool,
+  negb (negb b) = b.
+Proof.
+  intros b. destruct b.
+    reflexivity.
+    reflexivity. Qed.
+
+
+Theorem zero_nbeq_plus_1 : forall n : nat,
+  beq_nat 0 (n + 1) = false.
+Proof.
+  intros n.
+  destruct n as [|n'].
+  reflexivity.
+  reflexivity.
+Qed.
+
+Theorem identity_fn_applied_twice : 
+  forall(f : bool -> bool), 
+  (forall (x : bool), f x = x) ->
+  forall (b : bool), f (f b) = b.
+Proof.
+  intros f.
+  intros H.
+  intros b.
+  rewrite -> H.
+  rewrite -> H.
+  reflexivity.
+Qed.
 
