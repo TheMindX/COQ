@@ -376,6 +376,7 @@ Proof.
   reflexivity.
 Qed.
 
+(* comment start 2 *)
 Theorem identity_fn_applied_twice : 
   forall(f : bool -> bool), 
   (forall (x : bool), f x = x) ->
@@ -388,4 +389,123 @@ Proof.
   rewrite -> H.
   reflexivity.
 Qed.
+
+
+Example or_true_c :
+  forall (c:bool),
+  (orb true c) = true.
+
+Proof.
+  reflexivity.
+Qed.
+
+Lemma and_false_c :
+  forall (c:bool),
+  andb false c = false.
+
+Proof.
+  reflexivity.
+Qed.
+
+
+(* comment start 2 *)
+Theorem andb_eq_orb : 
+  forall (b c : bool),
+  (andb b c = orb b c) ->
+  b = c.
+Proof.
+  destruct b.
+  intros c.
+  Focus 1.
+  simpl.
+  intros.
+  rewrite <- H.
+  reflexivity.
+  intros c.
+  rewrite -> and_false_c with c.
+  simpl.
+  intros h2.
+  rewrite -> h2.
+  reflexivity.
+Qed.
+  
+
+
+Inductive bnat : Type :=
+  | O : bnat (* 0 *)
+  | T : bnat->bnat (* xxx0 *)
+  | TI : bnat->bnat (* xxxx1 *).
+
+
+Fixpoint incr (n:bnat) : bnat :=
+  match n with
+  | O => TI O
+  | T n' => TI n'
+  | TI n' => T (incr n')
+  end.
+
+
+Example test_bin_incr1:
+  (incr O) = (TI O).
+
+Proof. simpl. reflexivity. Qed.
+
+Example test_bin_incr2:
+  (incr (TI (TI O)))=(T (T (TI O))).
+Proof. reflexivity. Qed.
+
+Example test_bin_incr3:
+  (incr (T (TI O)))=(TI (TI O)).
+Proof. reflexivity. Qed.
+
+Example test_bin_incr4:
+  (incr (TI (T (TI O))))=(T (TI (TI O))).
+Proof. reflexivity. Qed.
+
+Example test_bin_incr5:
+  (incr (TI (T (TI O))))=(T (TI (TI O))).
+Proof. reflexivity. Qed.
+
+
+Fixpoint lt (n m:nat) : bool :=
+  match n, m with
+  | 0, S m' => true
+  | 0, 0 => false
+  | S n', 0 => false
+  | S n', S m' => lt n' m'
+  end.
+
+Fixpoint decrto1(n:nat) : nat :=
+  match n with
+  | 3 => 1
+  | S n' =>(decrto1 n')
+  | _ => 1
+  end.
+
+Eval compute in (decrto1 10).
+Eval compute in (eq 10 10).
+
+Fixpoint eq1 (n m:nat) : bool :=
+  match n, m with
+  | 0, 0 => true
+  | S n', S m' => eq1 n' m'
+  | _, _ => false
+  end.
+
+(* ill form 
+Fixpoint incrto(n:nat) : nat :=
+  match n with
+  | 10 => 11
+  | 0 => 1
+  | m' =>(incrto (S m'))
+  end.
+*)
+
+
+
+
+
+
+
+
 
