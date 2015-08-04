@@ -241,15 +241,15 @@ Fixpoint beq_nat (n m : nat) : bool :=
             end
   end.
 
-Fixpoint ble_nat1 (n m : nat) : bool :=
+Fixpoint ble_nat (n m : nat) : bool :=
   match n, m with
   | 0, 0 => true
   | S n', 0 => false
   | 0, S m' => true
-  | S n', S m' => (ble_nat1 n' m')
+  | S n', S m' => (ble_nat n' m')
   end.
 
-Eval compute in (ble_nat1 3 4).
+Eval compute in (ble_nat 3 3).
 
 Fixpoint blt_nat1 (n m : nat) : bool :=
   match n, m with
@@ -545,22 +545,6 @@ Proof.
     rewrite <- H.
     reflexivity.
 Qed.
-
-
-Theorem andb_true_elim2 : forall b c : bool,
-  andb b c = true -> c = true.
-Proof.
-  intros.
-  destruct b.
-  Case "b = true".
-    reflexivity.
-  Case "c = false".
-    rewrite <- H.
-  destruct b.
-  Case "b = true".
-    reflexivity.
-  Case "b = false".
-    reflexivity.
 
 
 

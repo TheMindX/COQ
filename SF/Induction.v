@@ -1,3 +1,5 @@
+Require Export Basics.
+
 Require String. Open Scope string_scope.
 
 Ltac move_to_top x :=
@@ -44,7 +46,7 @@ Proof.
 Qed.
 
 
-Theorem plus_0_r_firsttry : forall n:nat,
+Theorem plus_0 : forall n:nat,
   n + 0 = n.
 
 Proof.
@@ -73,7 +75,7 @@ Qed.
 
 
 (* Exercise: 2 stars (basic_induction) *)
-Theorem mult_0_r : forall n:nat,
+Theorem mult_0 : forall n:nat,
   n * 0 = 0.
 Proof.
   intros.
@@ -130,7 +132,7 @@ Theorem plus_comm : forall n m : nat,
 Proof.
   intros.
   induction n as [|n'].
-  rewrite -> plus_0_r_firsttry.
+  rewrite -> plus_0.
   reflexivity.
   rewrite <- plus_n_Sm with m n'.
   simpl.
@@ -143,7 +145,7 @@ Theorem plus_assoc : forall n m p : nat,
 Proof.
   intros.
   induction m.
-  rewrite -> plus_0_r_firsttry.
+  rewrite -> plus_0.
   reflexivity.
   rewrite -> plus_comm with (S m) p.
   rewrite <- plus_n_Sm with p m.
@@ -235,7 +237,7 @@ Proof.
   induction b.
   rewrite -> plus_comm with a 1.
   simpl.
-  rewrite -> plus_0_r_firsttry.
+  rewrite -> plus_0.
   reflexivity.
   induction a.
   simpl.
@@ -290,6 +292,68 @@ Proof.
 Qed.
 
 
+Fixpoint ble_nat (n m : nat) : bool :=
+  match n, m with
+  | 0, 0 => true
+  | S n', 0 => false
+  | 0, S m' => true
+  | S n', S m' => (ble_nat n' m')
+  end.
 
+Theorem ble_nat_refl : forall n:nat,
+  true = ble_nat n n.
+Proof.
+  induction n.
+  reflexivity.
+  assert(h1: forall x y:nat, 
+    ble_nat (S x) (S y) = ble_nat x y).
+  reflexivity.
+  rewrite -> h1.
+  rewrite -> IHn.
+  reflexivity.
+Qed.
+
+Fixpoint beq_nat (n m : nat) : bool :=
+  match n, m with
+  | 0, 0 => true
+  | 0, S m' => false
+  | S n', 0 => false
+  | S n', S m' => false
+  end.
+
+Theorem zero_nbeq_S : forall n:nat,
+  beq_nat 0 (S n) = false.
+Proof.
+  simpl.
+  intros.
+  reflexivity.
+Qed.
+
+Theorem mult_plus_distr : forall n m p : nat,
+  (n + m) * p = (n * p) + (m * p).
+Proof.
+  intros. induction n.
+  simpl. reflexivity.
+  simpl.
+  rewrite -> IHn.
+  rewrite -> plus_assoc.
+  reflexivity.
+Qed.
+
+Theorem mult_assoc : forall n m p : nat,
+  n * (m * p) = (n * m) * p.
+Proof.
+  intros.
+  induction n as [|n'].
+  Case "n=0".
+  reflexivity.
+  Case "n = S n'".
+  simpl.
+  rewrite -> IHn'.
+  rewrite -> mult_plus_distr.
+  reflexivity.
+Qed.
+
+  
 
 
